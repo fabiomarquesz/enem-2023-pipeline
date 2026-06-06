@@ -1,0 +1,22 @@
+# Data (nunca sobe dado bruto pro git)
+data/
+logs/
+*.csv
+*.zip
+*.rar
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+*.egg-info/
+
+# Airflow
+airflow.db
+airflow.cfg
+
+# Env
+.env
+
+# OS
+.DS_Store
