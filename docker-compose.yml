@@ -1,0 +1,63 @@
+version: '3.8'
+
+services:
+
+  postgres:
+    image: postgres:16
+    container_name: enem_postgres
+    env_file: .env
+    ports:
+      - "${POSTGRES_PORT}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./sql:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "enem_user", "-d", "enem_db"]
+      interval: 10s
+      retries: 5
+    restart: unless-stopped
+
+  airflow-init:
+    image: apache/airflow:2.9.1
+    container_name: enem_airflow_init
+    env_file: .env
+    environment:
+      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=${AIRFLOW__DATABASE__SQL_ALCHEMY_CONN}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    entrypoint: bash -c "airflow db migrate && airflow users create --username admin --password admin --firstname Fabio --lastname Marques --role Admin --email fabinho_marquez@hotmail.com.br"
+    restart: on-failure
+
+  airflow-webserver:
+    image: apache/airflow:2.9.1
+    container_name: enem_airflow_webserver
+    env_file: .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./logs:/opt/airflow/logs
+      - ./plugins:/opt/airflow/plugins
+    command: webserver
+    restart: unless-stopped
+
+  airflow-scheduler:
+    image: apache/airflow:2.9.1
+    container_name: enem_airflow_scheduler
+    env_file: .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./logs:/opt/airflow/logs
+      - ./plugins:/opt/airflow/plugins
+    command: scheduler
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
