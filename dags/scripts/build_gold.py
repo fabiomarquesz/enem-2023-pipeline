@@ -17,8 +17,8 @@ log = logging.getLogger(__name__)
 load_dotenv()
 
 DB_CONFIG = {
-    'host': "localhost",
-    'port': os.getenv('POSTGRES_PORT', '5435'),
+    'host': os.getenv("POSTGRES_HOST", "postgres"),
+    'port': os.getenv('POSTGRES_INTERNAL_PORT', '5432'),
     'dbname': os.getenv('POSTGRES_DB', 'enem_db'),
     'user': os.getenv('POSTGRES_USER', 'enem_user'),
     'password': os.getenv('POSTGRES_PASSWORD', 'enem_pass'),

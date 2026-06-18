@@ -18,7 +18,9 @@ services:
     restart: unless-stopped
 
   airflow-init:
-    image: apache/airflow:2.9.1
+    build:
+      context: .
+      dockerfile: .docker/Dockerfile
     container_name: enem_airflow_init
     env_file: .env
     environment:
@@ -30,7 +32,9 @@ services:
     restart: on-failure
 
   airflow-webserver:
-    image: apache/airflow:2.9.1
+    build:
+      context: .
+      dockerfile: .docker/Dockerfile
     container_name: enem_airflow_webserver
     env_file: .env
     depends_on:
@@ -42,11 +46,14 @@ services:
       - ./dags:/opt/airflow/dags
       - ./logs:/opt/airflow/logs
       - ./plugins:/opt/airflow/plugins
+      - ./data:/opt/airflow/dags/data
     command: webserver
     restart: unless-stopped
 
   airflow-scheduler:
-    image: apache/airflow:2.9.1
+    build:
+      context: .
+      dockerfile: .docker/Dockerfile
     container_name: enem_airflow_scheduler
     env_file: .env
     depends_on:
@@ -56,6 +63,7 @@ services:
       - ./dags:/opt/airflow/dags
       - ./logs:/opt/airflow/logs
       - ./plugins:/opt/airflow/plugins
+      - ./data:/opt/airflow/dags/data
     command: scheduler
     restart: unless-stopped
 

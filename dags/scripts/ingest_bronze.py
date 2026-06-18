@@ -21,14 +21,14 @@ log = logging.getLogger(__name__)
 load_dotenv()
 
 # Configurações do arquivo
-ZIP_PATH = "data/bronze/microdados_enem_2023.zip"
+ZIP_PATH = "/opt/airflow/dags/data/bronze/microdados_enem_2023.zip"
 CHUNK_SIZE = 10_000  # Número de linhas por chunk para leitura e inserção
 ENCODING = "latin1"  # Codificação dos arquivos CSV do ENEM
 
 # Configurações do banco de dados
 DB_CONFIG = {
-    "host": "localhost",
-    "port": os.getenv("POSTGRES_PORT", "5432"),
+    "host": os.getenv("POSTGRES_HOST", "postgres"),
+    "port": os.getenv("POSTGRES_INTERNAL_PORT", "5432"),
     "dbname": os.getenv("POSTGRES_DB", "enem_db"),
     "user": os.getenv("POSTGRES_USER", "enem_user"),
     "password": os.getenv("POSTGRES_PASSWORD", "enem_pass")
