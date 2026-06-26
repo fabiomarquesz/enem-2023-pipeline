@@ -72,3 +72,30 @@ python scripts/build_gold.py
 ## Autor
 
 Fabio Marques — [@fabiomarquesz](https://github.com/fabiomarquesz)
+
+## Arquitetura Cloud (Sprint 2)
+
+Pipeline migrado para AWS:
+
+| Componente | Local | Cloud |
+|---|---|---|
+| Storage | `data/bronze/` (disco) | AWS S3 |
+| Banco de dados | PostgreSQL (Docker) | AWS RDS PostgreSQL |
+| Credenciais | `.env` local | IAM + AWS CLI |
+
+### Infraestrutura AWS
+
+- **S3 Bucket:** `enem-pipeline-fabiomarques`
+- **RDS:** `enem-pipeline-db` (PostgreSQL 16, db.t3.micro)
+- **Região:** `us-east-1`
+
+### Fluxo cloud
+S3 (bronze/microdados_enem_2023.zip)
+
+↓ boto3 download
+
+RAM (streaming em chunks de 10k linhas)
+
+↓ psycopg2 + SSL
+
+RDS PostgreSQL (bronze.enem_2023 → 3.933.955 linhas)
