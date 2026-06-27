@@ -99,3 +99,75 @@ RAM (streaming em chunks de 10k linhas)
 ↓ psycopg2 + SSL
 
 RDS PostgreSQL (bronze.enem_2023 → 3.933.955 linhas)
+
+## Configuração do dbt
+
+O dbt usa um arquivo de conexão local em `~/.dbt/profiles.yml` — **nunca versionado no Git** por conter credenciais.
+
+Crie o arquivo com a seguinte estrutura:
+
+```yaml
+enem_dbt:
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host: localhost
+      port: 5435
+      user: enem_user
+      password: <sua_senha>
+      dbname: enem_db
+      schema: silver
+      threads: 4
+
+    cloud:
+      type: postgres
+      host: <seu_endpoint_rds>.rds.amazonaws.com
+      port: 5432
+      user: enem_user
+      password: <sua_senha>
+      dbname: enem_db
+      schema: silver
+      threads: 4
+      sslmode: require
+```
+
+Para rodar os modelos:
+- Local: `cd enem_dbt && dbt run`
+- Cloud: `cd enem_dbt && dbt run --target cloud`
+
+## Configuração do dbt
+
+O dbt usa um arquivo de conexão local em `~/.dbt/profiles.yml` — **nunca versionado no Git** por conter credenciais.
+
+Crie o arquivo com a seguinte estrutura:
+
+```yaml
+enem_dbt:
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host: localhost
+      port: 5435
+      user: enem_user
+      password: <sua_senha>
+      dbname: enem_db
+      schema: silver
+      threads: 4
+
+    cloud:
+      type: postgres
+      host: <seu_endpoint_rds>.rds.amazonaws.com
+      port: 5432
+      user: enem_user
+      password: <sua_senha>
+      dbname: enem_db
+      schema: silver
+      threads: 4
+      sslmode: require
+```
+
+Para rodar os modelos:
+- Local: `cd enem_dbt && dbt run`
+- Cloud: `cd enem_dbt && dbt run --target cloud`
