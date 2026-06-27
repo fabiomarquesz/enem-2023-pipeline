@@ -136,7 +136,3 @@ Para rodar os modelos:
 - Local: `cd enem_dbt && dbt run`
 - Cloud: `cd enem_dbt && dbt run --target cloud`
 
-
-Para rodar os modelos:
-- Local: `cd enem_dbt && dbt run`
-- Cloud: `cd enem_dbt && dbt run --target cloud`
