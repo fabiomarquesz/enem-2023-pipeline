@@ -1,0 +1,28 @@
+version: 2
+
+models:
+  - name: silver_enem_2023
+    description: "Dados do ENEM 2023 limpos e tipados"
+    columns:
+      - name: bronze_id
+        description: "ID de rastreabilidade com a Bronze"
+        tests:
+          - not_null
+          - unique
+
+      - name: nu_inscricao
+        description: "Número de inscrição"
+        tests:
+          - not_null
+
+      - name: tp_sexo
+        description: "Sexo do participante"
+        tests:
+          - accepted_values:
+              values: ['M', 'F']
+              quote: true
+
+      - name: sg_uf_prova
+        description: "UF de realização da prova"
+        tests:
+          - not_null

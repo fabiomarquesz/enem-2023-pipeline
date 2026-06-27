@@ -1,0 +1,20 @@
+version: 2
+
+sources:
+  - name: bronze
+    schema: bronze
+    description: "Dados brutos do ENEM 2023 ingeridos pelo script Python"
+    tables:
+      - name: enem_2023
+        description: "Microdados ENEM 2023 — 3,93M registros, tudo como TEXT"
+        columns:
+          - name: id
+            description: "Chave primária serial"
+          - name: nu_inscricao
+            description: "Número de inscrição do participante"
+          - name: sg_uf_prova
+            description: "UF onde o participante realizou a prova"
+          - name: nu_nota_mt
+            description: "Nota de matemática (TEXT na Bronze)"
+          - name: ingested_at
+            description: "Timestamp de ingestão"

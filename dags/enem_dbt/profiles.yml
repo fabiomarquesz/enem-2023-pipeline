@@ -1,0 +1,23 @@
+enem_dbt:
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host: localhost
+      port: 5435
+      user: enem_user
+      password: enem_pass
+      dbname: enem_db
+      schema: silver
+      threads: 4
+
+    cloud:
+      type: postgres
+      host: enem-pipeline-db.c8dumieki7rc.us-east-1.rds.amazonaws.com
+      port: 5432
+      user: enem_user
+      password: EnemPipeline2024!
+      dbname: enem_db
+      schema: silver
+      threads: 4
+      sslmode: require
